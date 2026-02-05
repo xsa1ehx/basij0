@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}ثبت‌نام{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5 class="text-center mb-4">
+                    <i class="bi bi-person-plus"></i>
+                    ثبت‌نام کاربر جدید
+                </h5>
+
+                <form method="post">
+                    <div class="mb-3">
+                        <label class="form-label">شماره دانشجویی</label>
+                        <input type="text" name="student_number" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">کد ملی</label>
+                        <input type="text" name="national_code" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">شماره تلفن</label>
+                        <input type="text" name="phone_number" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">جنسیت</label>
+                        <select name="gender" class="form-select" required>
+                            <option value="">انتخاب کنید</option>
+                            <option value="brother">برادر</option>
+                            <option value="sister">خواهر</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">آدرس</label>
+                        <textarea name="address" class="form-control" rows="2"></textarea>
+                    </div>
+
+                    <div class="form-text">
+                        <small>
+                            رمز عبور شما همان شماره دانشجویی شما است.
+                        </small>
+                    </div>
+
+                    <button class="btn btn-success w-100 mt-3">
+                        ثبت‌نام
+                    </button>
+                </form>
+
+                <div class="text-center mt-3">
+                    <a href="/login">حساب دارید؟ وارد شوید</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

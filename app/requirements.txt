@@ -1,0 +1,4 @@
+echo fastapi==0.80.0 >> requirements.txt
+echo uvicorn==0.18.0 >> requirements.txt
+echo pydantic==1.10.2 >> requirements.txt
+echo sqlalchemy==2.0.0 >> requirements.txt

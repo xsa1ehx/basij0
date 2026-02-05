@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block title %}لاگ‌های سیستم{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-dark text-white">
+            <h5 class="mb-0">
+                <i class="bi bi-shield-lock"></i>
+                لاگ‌های امنیتی و سیستمی
+            </h5>
+        </div>
+
+        <div class="card-body p-0">
+            <!-- جدول لاگ‌ها -->
+            <table class="table table-striped table-hover mb-0 text-center align-middle" id="audit-logs-table">
+                <thead class="table-secondary">
+                    <tr>
+                        <th>#</th>
+                        <th>کاربر</th>
+                        <th>عملیات</th>
+                        <th>موجودیت</th>
+                        <th>شناسه</th>
+                        <th>توضیحات</th>
+                        <th>IP</th>
+                        <th>زمان</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for log in logs %}
+                    <tr>
+                        <td>{{ log.id }}</td>
+                        <td>{% if log.user %}{{ log.user.username or log.user.id }}{% else %}سیستم{% endif %}</td>
+                        <td><span class="badge bg-primary">{{ log.action }}</span></td>
+                        <td>{{ log.entity or "-" }}</td>
+                        <td>{{ log.entity_id or "-" }}</td>
+                        <td class="text-start">{{ log.description or "-" }}</td>
+                        <td>{{ log.ip_address or "-" }}</td>
+                        <td class="small text-muted">{{ log.created_at.strftime("%Y-%m-%d %H:%M") }}</td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="8" class="text-muted py-4">هیچ لاگی ثبت نشده است</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- فیلتر کردن لاگ‌ها -->
+    <div class="card mb-3">
+        <div class="card-body">
+            <form method="get" class="row g-3 align-items-end">
+                <div class="col-md-3">
+                    <label class="form-label">شناسه کاربر</label>
+                    <input type="number" name="user_id" class="form-control" value="{{ filters.user_id }}">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">نوع عملیات</label>
+                    <select name="action" class="form-select">
+                        <option value="">همه</option>
+                        {% for a in ["LOGIN","REGISTER","UPDATE_PROFILE","ADMIN_UPDATE","ACCESS_DENIED"] %}
+                        <option value="{{ a }}" {% if filters.action == a %}selected{% endif %}>{{ a }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">از تاریخ</label>
+                    <input type="date" name="date_from" class="form-control" value="{{ filters.date_from }}">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">تا تاریخ</label>
+                    <input type="date" name="date_to" class="form-control" value="{{ filters.date_to }}">
+                </div>
+                <div class="col-12 text-end">
+                    <button class="btn btn-primary">
+                        <i class="bi bi-funnel"></i> فیلتر
+                    </button>
+                    <a href="/admin/audit-logs" class="btn btn-secondary">پاک‌سازی</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- خروجی CSV و Excel -->
+    <div class="d-flex justify-content-end gap-2 mb-3">
+        <a class="btn btn-outline-success" href="/admin/audit-logs/export/excel?{{ request.query_params }}">
+            <i class="bi bi-file-earmark-excel"></i> خروجی Excel
+        </a>
+        <a class="btn btn-outline-secondary" href="/admin/audit-logs/export/csv?{{ request.query_params }}">
+            <i class="bi bi-filetype-csv"></i> خروجی CSV
+        </a>
+    </div>
+</div>
+
+{% endblock %}
+

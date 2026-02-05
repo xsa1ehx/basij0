@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+</body>
+</html>
+{% extends "base.html" %}
+
+{% block title %}پروفایل کاربری{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>پروفایل کاربری</h1>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">اطلاعات شخصی</h5>
+            <table class="table">
+                <tr>
+                    <th>شماره دانشجویی:</th>
+                    <td>{{ user.student_number }}</td>
+                </tr>
+                <tr>
+                    <th>کد ملی:</th>
+                    <td>{{ profile.national_code if profile else 'ثبت نشده' }}</td>
+                </tr>
+                <tr>
+                    <th>شماره تلفن:</th>
+                    <td>{{ profile.phone_number if profile else 'ثبت نشده' }}</td>
+                </tr>
+                <tr>
+                    <th>جنسیت:</th>
+                    <td>{{ profile.gender if profile else 'ثبت نشده' }}</td>
+                </tr>
+                <tr>
+                    <th>آدرس:</th>
+                    <td>{{ profile.address if profile else 'ثبت نشده' }}</td>
+                </tr>
+            </table>
+            <a href="/ui/dashboard/profile/edit" class="btn btn-warning">ویرایش پروفایل</a>
+            <a href="/ui/dashboard" class="btn btn-secondary">بازگشت به داشبورد</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}داشبورد{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>داشبورد کاربری</h1>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">پروفایل</h5>
+                    <p class="card-text">اطلاعات شخصی شما</p>
+                    <a href="/ui/dashboard/profile" class="btn btn-primary">مشاهده پروفایل</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">خوش آمدید {{ user.student_number }}</h5>
+                    <p>نقش: {{ user.role.name }}</p>
+
+                    {% if profile %}
+                    <p>شماره تلفن: {{ profile.phone_number }}</p>
+                    <p>آدرس: {{ profile.address }}</p>
+                    {% else %}
+                    <p>اطلاعات پروفایل شما در دسترس نیست.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+  <h4 class="mb-4">📊 داشبورد لاگ‌های سیستم</h4>
+
+  <!-- کارت‌های آمار -->
+  <div class="row mb-4">
+    <div class="col-md-6">
+      <div class="card text-center shadow-sm border-primary">
+        <div class="card-body">
+          <h6 class="card-title text-muted">کل رویدادها</h6>
+          <h2 class="text-primary">{{ stats.total_logs }}</h2>
+          <small class="text-muted">تعداد کل لاگ‌های ثبت شده</small>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-6">
+      <div class="card text-center shadow-sm border-success">
+        <div class="card-body">
+          <h6 class="card-title text-muted">انواع عملیات</h6>
+          <h2 class="text-success">{{ stats.actions|length }}</h2>
+          <small class="text-muted">تعداد نوع عملیات مختلف</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- لیست عملیات‌ها -->
+  <div class="card mb-4 shadow-sm">
+    <div class="card-header bg-primary text-white">
+      📊 توزیع عملیات‌ها
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-hover" id="operations-table">
+          <thead>
+            <tr>
+              <th>عملیات</th>
+              <th>تعداد</th>
+              <th>درصد</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for action, count in stats.actions.items() %}
+            <tr>
+              <td>
+                <span class="badge bg-info">{{ action }}</span>
+              </td>
+              <td><strong>{{ count }}</strong></td>
+              <td>
+                {% if stats.total_logs > 0 %}
+                {% set percent = (count / stats.total_logs * 100)|round(1) %}
+                <div class="progress" style="height: 10px;">
+                  <div class="progress-bar bg-success" style="width: {{ percent }}%"></div>
+                </div>
+                <small class="text-muted">{{ percent }}%</small>
+                {% else %}
+                <small class="text-muted">0%</small>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- آخرین رویدادها -->
+  <div class="card shadow-sm">
+    <div class="card-header bg-warning text-dark">
+      ⏰ آخرین لاگ‌ها
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-sm" id="recent-logs-table">
+          <thead>
+            <tr>
+              <th>زمان</th>
+              <th>کاربر</th>
+              <th>عملیات</th>
+              <th>توضیحات</th>
+              <th>IP</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for log in recent_logs %}
+            <tr>
+              <td>
+                <small class="text-muted">{{ log.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</small>
+              </td>
+              <td>
+                {% if log.user_id %}
+                <span class="badge bg-info">کاربر {{ log.user_id }}</span>
+                {% else %}
+                <span class="badge bg-secondary">سیستم</span>
+                {% endif %}
+              </td>
+              <td>
+                <span class="badge bg-primary">{{ log.action }}</span>
+              </td>
+              <td>{{ log.description or '-' }}</td>
+              <td><code>{{ log.ip_address or '-' }}</code></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="text-center mt-3">
+        <a href="/admin/audit-logs" class="btn btn-primary">
+          مشاهده تمام لاگ‌ها →
+        </a>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
